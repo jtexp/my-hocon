@@ -41,6 +41,7 @@ export interface ObjectBody extends NodeSequence {
 
 export interface RootValue extends NodeSequence {
   type: 'root-value',
+  isWrapped: boolean,
   body: ListBody | ObjectBody,
   children: (MultilineSpace | Problem | OpenSquare | CloseSquare | OpenCurly | CloseCurly | ListBody | ObjectBody)[]
 }
@@ -248,13 +249,13 @@ export const rootValueParser: TokenParser<RootValue> = apply(seq(optSpaceParser,
   const wrappedSpace1 = space1 !== undefined ? [space1] : []
   const wrappedSpace2 = space2 !== undefined ? [space2] : []
   const children = [...wrappedSpace1, ...main.children, ...wrappedSpace2]
-  return { type: 'root-value', body: main.children[1], children }
+  return { type: 'root-value', isWrapped: true, body: main.children[1], children }
 })
 
 export const rootFieldsParser: TokenParser<RootValue> = apply(wrappedSequence(rootFieldsElementParser, optSpaceParser), token => {
   const [fields, children] = token
   const objectBody: ObjectBody = { type: 'object-body', fields, children }
-  return { type: 'root-value', body: objectBody, children: [objectBody] }
+  return { type: 'root-value', isWrapped: false, body: objectBody, children: [objectBody] }
 })
 
 rootValueRule.setPattern(alt(rootValueParser, rootFieldsParser))
