@@ -1,0 +1,165 @@
+{
+  "fileTypes": [
+    "conf"
+  ],
+  "name": "HOCON",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#comma"
+    },
+    {
+      "include": "#colon"
+    },
+    {
+      "include": "#equals"
+    },
+    {
+      "include": "#plus-equals"
+    },
+    {
+      "include": "#open-path-curly"
+    },
+    {
+      "include": "#open-curly"
+    },
+    {
+      "include": "#close-curly"
+    },
+    {
+      "include": "#open-square"
+    },
+    {
+      "include": "#close-square"
+    },
+    {
+      "include": "#multiline-text-string"
+    },
+    {
+      "include": "#quoted-text-string"
+    },
+    {
+      "include": "#unquoted-text-string"
+    },
+    {
+      "match": "[^\\s\\u00a0\\u2007\\u202f\\ufeff]",
+      "name": "invalid.illegal.value.hocon"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "captures": {
+        "0": {
+          "name": "comment.line.hocon"
+        }
+      },
+      "match": "(#|\\/\\/).*"
+    },
+    "comma": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.comma.hocon"
+        }
+      },
+      "match": ","
+    },
+    "colon": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.colon.hocon"
+        }
+      },
+      "match": ":"
+    },
+    "equals": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.equals.hocon"
+        }
+      },
+      "match": "="
+    },
+    "plus-equals": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.plus-equals.hocon"
+        }
+      },
+      "match": "\\+="
+    },
+    "open-path-curly": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.open-path-curly.hocon"
+        }
+      },
+      "match": "(\\$\\{\\?|\\$\\{)"
+    },
+    "open-curly": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.open-curly.hocon"
+        }
+      },
+      "match": "\\{"
+    },
+    "close-curly": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.close-curly.hocon"
+        }
+      },
+      "match": "\\}"
+    },
+    "open-square": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.open-square.hocon"
+        }
+      },
+      "match": "\\["
+    },
+    "close-square": {
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.close-square.hocon"
+        }
+      },
+      "match": "\\]"
+    },
+    "multiline-text-string": {
+      "begin": "\"\"\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.hocon"
+        }
+      },
+      "end": "\"*\"\"\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.hocon"
+        }
+      },
+      "name": "string.quoted.triple.hocon"
+    },
+    "quoted-text-string": {
+      "match": "(\")(([^\"\\\\\\n]|\\\\[\"\\\\bfnrt/]|\\\\u[0-9a-fA-F]{4})*)(\")",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.string.begin.hocon"
+        },
+        "3": {
+          "name": "punctuation.definition.string.end.hocon"
+        }
+      },
+      "name": "string.quoted.double.hocon"
+    },
+    "unquoted-text-string": {
+      "match": "[^\\s\\u00a0\\u2007\\u202f\\ufeff$\"{}\\[\\]:=,+#`^?!@*&]+",
+      "name": "support.variable.hocon"
+    }
+  },
+  "scopeName": "source.hocon"
+}
