@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/camelcase
-import { alt, amb, apply, opt_sc, rep_sc, rule, seq } from 'typescript-parsec'
-import { Comment, commentParser, NodeSequence, Primitive, primitiveParser, primitiveProblemParser, toRaw, WhiteSpace, whiteSpaceParser } from './basic'
+import { alt, apply, opt_sc, ParserOutput, rep_sc, rule, seq } from 'typescript-parsec'
+import { Comment, commentParser, NodeSequence, Primitive, primitiveParser, primitiveProblemParser, toRaw, WhiteSpace, whiteSpaceParser, toDebugOutput } from './basic'
 import { CloseCurly, closeCurlyParser, CloseSquare, closeSquareParser, OpenCurly, openCurlyParser, OpenSquare, openSquareParser } from './delimiter'
 import { Inclusion, inclusionParser } from './inclusion'
 import { Problem } from './problem'
 import { Colon, colonParser, Comma, commaParser, Equals, equalsParser, NewLine, newLineParser, PlusEquals, plusEqualsParser } from './separater'
 import { Substitution, substitutionParser, SubstitutionPath, substitutionPathParser } from './substitution'
-import { TokenParser, TokenRule } from './tokenizer'
+import { TokenParser, TokenRule, TokenType } from './tokenizer'
 
 type Value = ListValue | UnclosedListValue | ObjectValue | UnclosedObjectValue | Substitution | Primitive | Problem
 
@@ -68,6 +68,19 @@ export interface UnclosedObjectValue extends NodeSequence {
   type: 'unclosed-object-value',
   body: ObjectBody,
   children: [Problem, ObjectBody]
+}
+
+function first<T>(value: TokenParser<T>): TokenParser<T> {
+  return {
+    parse(token): ParserOutput<TokenType, T> {
+      const result = value.parse(token)
+      if (result.successful) {
+        const candidates = result.candidates
+        candidates.length = Math.min(1, candidates.length)
+      }
+      return result
+    }
+  }
 }
 
 function checked(value: TokenParser<ValueConcatenation>): TokenParser<ValueConcatenation> {
@@ -138,7 +151,7 @@ function concatenation(value: TokenParser<Value>): TokenParser<ValueConcatenatio
 
 function wrappedSequence<T>(value: TokenParser<T>, space: TokenParser<MultilineSpace | undefined>): TokenParser<[(T | ValueConcatenation)[], (T | MultilineSpace | ValueConcatenation | Comma)[]]> {
   const leftCommaParser: TokenParser<[true, Comma]> = apply(commaParser, token => [true, token])
-  const rightValueParser: TokenParser<[false, T]> = apply(amb(value), token => [false, token[0]])
+  const rightValueParser: TokenParser<[false, T]> = apply(first(value), token => [false, token])
   return apply(seq(space, rep_sc(seq(alt(leftCommaParser, rightValueParser), space))), token => {
     const [head, tail] = token
     const values: (T | ValueConcatenation)[] = []
@@ -217,7 +230,7 @@ export const objectBodyElementParser: TokenParser<ObjectField | Inclusion | Valu
       token.children[0] = { type: 'problem', error: 'UNRECOGNIZED_OBJECT_FIELD', pos: head.children[0].pos, raw: toRaw(head) }
       break
     case 'primitive':
-      case 'problem':
+    case 'problem':
       token.children[0] = { type: 'problem', error: 'UNRECOGNIZED_OBJECT_FIELD', pos: head.pos, raw: head.raw }
       break
   }
@@ -263,7 +276,7 @@ rootValueRule.setPattern(alt(rootValueParser, rootFieldsParser))
 listValueRule.setPattern(apply(seq(openSquareParser, wrappedSequence(listBodyElementParser, optSpaceParser), opt_sc(closeSquareParser)), token => {
   const [open, [values, children], close] = token, listBody: ListBody = { type: 'list-body', values, children }
   if (close === undefined) {
-    const problem: Problem = { type: 'problem', pos: open.pos, raw: open.raw, error: 'UNCLOSED_BRACE'}
+    const problem: Problem = { type: 'problem', pos: open.pos, raw: open.raw, error: 'UNCLOSED_BRACE' }
     return { type: 'unclosed-list-value', body: listBody, children: [problem, listBody] }
   }
   return { type: 'list-value', body: listBody, children: [open, listBody, close] }
@@ -272,7 +285,7 @@ listValueRule.setPattern(apply(seq(openSquareParser, wrappedSequence(listBodyEle
 objectValueRule.setPattern(apply(seq(openCurlyParser, wrappedSequence(objectBodyElementParser, optSpaceParser), opt_sc(closeCurlyParser)), token => {
   const [open, [fields, children], close] = token, objectBody: ObjectBody = { type: 'object-body', fields, children }
   if (close === undefined) {
-    const problem: Problem = { type: 'problem', pos: open.pos, raw: open.raw, error: 'UNCLOSED_BRACKET'}
+    const problem: Problem = { type: 'problem', pos: open.pos, raw: open.raw, error: 'UNCLOSED_BRACKET' }
     return { type: 'unclosed-object-value', body: objectBody, children: [problem, objectBody] }
   }
   return { type: 'object-value', body: objectBody, children: [open, objectBody, close] }
