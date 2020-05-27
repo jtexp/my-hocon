@@ -1,12 +1,7 @@
-import { FormattingOptions, Range, TextEdit } from 'vscode-languageserver'
-import { TextDocument } from 'vscode-languageserver-textdocument'
-import { dfs, toDebugOutput } from '../parser/basic'
+import { FormattingOptions, TextEdit } from 'vscode-languageserver'
+import { TextDocument, Range } from 'vscode-languageserver-textdocument'
+import { dfs } from '../parser/basic'
 import { MultilineSpace, RootValue } from '../parser/sequencial'
-
-export function formatRange(options: FormattingOptions, range: Range, document: TextDocument, ast: RootValue): TextEdit[] {
-  console.log(options, range, document, toDebugOutput(ast)) // TODO
-  return []
-}
 
 export function format(options: FormattingOptions, document: TextDocument, ast: RootValue): TextEdit[] {
   const edits: TextEdit[] = []
@@ -20,7 +15,7 @@ export function format(options: FormattingOptions, document: TextDocument, ast: 
       if (node.type === 'multiline-space') for (const space of (node as MultilineSpace).children) {
         const accumulatedIndent = ''.concat(...stack.map((elem, index) => index === lastIndex ? '' : elem.indent))
         if (space.type === 'new-line') {
-          if (peek.prevSpaces !== undefined) peek.prevSpaces.newText = ''.concat(...stack.map(elem => elem.indent))
+          if (peek.prevSpaces !== undefined) peek.prevSpaces.newText = accumulatedIndent + peek.indent
           const start = document.positionAt(space.pos + space.raw.length), end = start
           const edit = { range: { start, end }, newText: accumulatedIndent }
           peek.indent = level > 1 ? indent : ''
@@ -53,4 +48,12 @@ export function format(options: FormattingOptions, document: TextDocument, ast: 
     }
   }
   return edits
+}
+
+export function formatRange(options: FormattingOptions, range: Range, document: TextDocument, ast: RootValue): TextEdit[] {
+  const rangeStart = document.offsetAt(range.start), rangeEnd = document.offsetAt(range.end)
+  return format(options, document, ast).filter(edit => {
+    const editStart = document.offsetAt(edit.range.start), editEnd = document.offsetAt(edit.range.end)
+    return editStart >= rangeStart && editEnd <= rangeEnd
+  }) // FIXME: bad implementation
 }
