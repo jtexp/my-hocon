@@ -1,7 +1,7 @@
 .vscode/**
-src/**
+src/client/**
+src/server/**
 .gitignore
-vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map
