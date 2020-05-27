@@ -24,7 +24,7 @@ export function format(options: FormattingOptions, document: TextDocument, ast: 
           edits.push(edit)
         } else if (space.type === 'comment') {
           const start = document.positionAt(space.pos), end = document.positionAt(space.pos + space.raw.length)
-          const newText: string = space.raw.replace(commentRegexp, peek.isHead ? '$1 ' : ' $1 ')
+          const newText: string = (peek.isHead ? '' : ' ') + space.raw.replace(commentRegexp, '$1 ')
           edits.push({ range: { start, end }, newText })
           peek.isHead = false
         } else {
