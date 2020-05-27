@@ -31,8 +31,24 @@ export interface NodeSequence {
   children: (Node | NodeSequence)[]
 }
 
+export function* dfs(nodes: NodeSequence): Iterable<[Node | NodeSequence, number]> {
+  const stack = [nodes.children[Symbol.iterator]()]
+  yield [nodes, stack.length - 1]
+  while (stack.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const iterator = stack.pop()!, next = iterator.next()
+    if (!next.done) {
+      stack.push(iterator)
+      yield [next.value, stack.length]
+      if (next.value.raw === undefined) {
+        stack.push(next.value.children[Symbol.iterator]())
+      }
+    }
+  }
+}
+
 export function toRaw(node: Node | NodeSequence | undefined): string {
-  return node === undefined ? '' : node.raw === undefined ? ''.concat(...node.children.map(toRaw)) : node.raw
+  return node === undefined ? '' : node.raw ?? ''.concat(...[...dfs(node)].map(elem => elem[0].raw ?? ''))
 }
 
 export function toDebugOutput(node: Node | NodeSequence): string {

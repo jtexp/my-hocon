@@ -33,6 +33,8 @@ export function activate(context: ExtensionContext): void {
 
   client = new LanguageClient('HOCON Language Server', serverOptions, clientOptions)
 
+  client.registerProposedFeatures()
+
   client.start()
 }
 
