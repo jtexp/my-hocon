@@ -41,6 +41,12 @@
       "include": "#quoted-text-string"
     },
     {
+      "include": "#constant"
+    },
+    {
+      "include": "#number"
+    },
+    {
       "include": "#unquoted-text-string"
     },
     {
@@ -155,6 +161,14 @@
         }
       },
       "name": "string.quoted.double.hocon"
+    },
+    "constant": {
+      "match": "(?<![^\\s\\u00a0\\u2007\\u202f\\ufeff$\"{}\\[\\]:=,+#`^?!@*&])(include|true|false|yes|no|on|off)(?![^\\s\\u00a0\\u2007\\u202f\\ufeff$\"{}\\[\\]:=,+#`^?!@*&])",
+      "name": "constant.language.hocon"
+    },
+    "number": {
+      "match": "(?<![^\\s\\u00a0\\u2007\\u202f\\ufeff$\"{}\\[\\]:=,+#`^?!@*&])(-?(0|[1-9]\\d*)((\\.\\d+)?([eE][+-]?\\d+)?)?)(?![^\\s\\u00a0\\u2007\\u202f\\ufeff$\"{}\\[\\]:=,+#`^?!@*&])",
+      "name": "constant.numeric.json"
     },
     "unquoted-text-string": {
       "match": "[^\\s\\u00a0\\u2007\\u202f\\ufeff$\"{}\\[\\]:=,+#`^?!@*&]+",
