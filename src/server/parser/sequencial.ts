@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/camelcase
 import { alt, apply, opt_sc, ParserOutput, rep_sc, rule, seq } from 'typescript-parsec'
-import { Comment, commentParser, NodeSequence, Primitive, primitiveParser, primitiveProblemParser, toRaw, WhiteSpace, whiteSpaceParser, toDebugOutput } from './basic'
+import { Comment, commentParser, NodeSequence, Primitive, primitiveParser, primitiveProblemParser, toRaw, WhiteSpace, whiteSpaceParser } from './basic'
 import { CloseCurly, closeCurlyParser, CloseSquare, closeSquareParser, OpenCurly, openCurlyParser, OpenSquare, openSquareParser } from './delimiter'
 import { Inclusion, inclusionParser } from './inclusion'
 import { Problem } from './problem'

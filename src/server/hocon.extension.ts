@@ -3,6 +3,7 @@ import { Connection, createConnection, DocumentUri, Proposed, ProposedFeatures, 
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import { diagnose } from './analyzer/diagnoser'
 import { format, formatRange } from './analyzer/fotmatter'
+import { symbolize } from './analyzer/symbolizer'
 import { semanticTokensLegend, tokenize } from './analyzer/tokenizer'
 import { RootValue, rootValueRule } from './parser/sequencial'
 import { tokenizer } from './parser/tokenizer'
@@ -26,6 +27,7 @@ function initializeConnection(): Connection {
 
     const capabilities: ServerCapabilities & Proposed.SemanticTokensServerCapabilities = {
       documentFormattingProvider: true, documentRangeFormattingProvider: true,
+      documentSymbolProvider: true,
       semanticTokensProvider: { legend: semanticTokensLegend }
     }
 
@@ -40,6 +42,11 @@ function initializeConnection(): Connection {
   connection.onDocumentFormatting(param => {
     const value = astCollection.get(param.textDocument.uri)
     return value ? format(param.options, value[1], value[0]) : []
+  })
+
+  connection.onDocumentSymbol(param => {
+    const value = astCollection.get(param.textDocument.uri)
+    return value ? symbolize(value[1], value[0]) : []
   })
 
   connection.languages.semanticTokens.on(param => {
