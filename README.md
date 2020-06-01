@@ -1,3 +1,5 @@
 # HOCON Colorizer
 
-A VSCode Extension for Language Syntax Highlighting of HOCON.
+HOCON Extension for Visual Studio Code.
+
+<https://marketplace.visualstudio.com/items?itemName=zzzz.hocon-colorizer>
