@@ -10,7 +10,7 @@ export enum TokenType {
 const regexp: { [key: string]: RegExp } = {
   [TokenType.NEWLINE]: /^\n/g,
   [TokenType.WHITESPACE]: /^([\u00a0\u2007\u202f\ufeff]|[^\n\S])+/g,
-  [TokenType.COMMENT]: /^(#|\/\/).+/g,
+  [TokenType.COMMENT]: /^(#|\/\/).*/g,
   [TokenType.PUNC_COMMA]: /^,/g,
   [TokenType.PUNC_COLON]: /^:/g,
   [TokenType.PUNC_EQUALS]: /^=/g,
