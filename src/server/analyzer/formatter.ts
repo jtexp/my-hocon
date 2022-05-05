@@ -1,7 +1,7 @@
 import { FormattingOptions, TextEdit } from 'vscode-languageserver'
 import { TextDocument, Range } from 'vscode-languageserver-textdocument'
 import { dfs } from '../parser/basic'
-import { MultilineSpace, RootValue } from '../parser/sequencial'
+import { MultilineSpace, RootValue } from '../parser/sequential'
 
 interface Addition {
   newText: string,

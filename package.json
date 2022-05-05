@@ -15,9 +15,11 @@
 		"Programming Languages"
 	],
 	"activationEvents": [
-		"onLanguage:hocon"
+		"onLanguage:hocon",
+		"onCommand:vscode_rdd.test",
+		"onCommand:vscode_rdd.ast"
 	],
-	"main": "./out/client/hocon.extension.js",
+	"main": "./out/src/client/hocon.extension.js",
 	"contributes": {
 		"languages": [
 			{
@@ -45,7 +47,20 @@
 					"text.html.markdown"
 				]
 			}
+		],
+		"commands": [
+			{
+				"command": "vscode_rdd.test",
+				"title": "test",
+				"category": "test"
+			},
+			{
+				"command": "vscode_rdd.ast",
+				"title": "get ast",
+				"category": "vscode_rdd"
+			}
 		]
+
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

@@ -6,5 +6,6 @@
         "out": true
     },
     "typescript.tsc.autoDetect": "off",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "hocon.trace.server": "verbose"
 }

@@ -2,7 +2,7 @@ import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import { dfs } from '../parser/basic'
 import { Problem, ProblemCollection } from '../parser/problem'
-import { RootValue } from '../parser/sequencial'
+import { RootValue } from '../parser/sequential'
 
 export function diagnose(document: TextDocument, langCode: string, result?: RootValue): Diagnostic[] {
   const diagnostics: Diagnostic[] = []

@@ -1,7 +1,7 @@
 import { Proposed } from 'vscode-languageclient'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import { dfs, Primitive } from '../parser/basic'
-import { RootValue } from '../parser/sequencial'
+import { RootValue } from '../parser/sequential'
 
 enum SemanticTokenTypes {
   VARIABLE, COMMENT, STRING, OPERATOR
