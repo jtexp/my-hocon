@@ -1,8 +1,6 @@
-# HOCON Colorizer
+# RDD Studio
 
-HOCON Extension for Visual Studio Code.
-
-<https://marketplace.visualstudio.com/items?itemName=zzzz.hocon-colorizer>
+Ezflow Extension for Visual Studio Code.
 
 ## Development
 

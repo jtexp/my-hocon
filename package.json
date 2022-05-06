@@ -1,9 +1,8 @@
 {
-	"name": "hocon-colorizer",
-	"displayName": "HOCON Colorizer",
-	"description": "HOCON Extension for Visual Studio Code",
-	"version": "0.4.0",
-	"publisher": "zzzz",
+	"name": "vscode_rdd",
+	"displayName": "VS Code RDD Studio",
+	"description": "HOCON/Ezflow Extension for Visual Studio Code",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.43.0"
 	},

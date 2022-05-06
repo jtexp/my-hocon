@@ -26,7 +26,7 @@ export function activate(context: ExtensionContext): void {
 
   const initializationOptions: object = { locale: locale.locale ?? 'en-us' }
 
-  console.log('[HOCON Colorizer Language Client] Options: ' + JSON.stringify(initializationOptions))
+  console.log('[Welcome to RDD Studio] Options: ' + JSON.stringify(initializationOptions))
 
   const serverModule = context.asAbsolutePath(join('out','src', 'server', 'hocon.extension.js'))
 

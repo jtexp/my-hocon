@@ -19,7 +19,7 @@ function initializeConnection(): Connection {
   connection.onInitialize(params => {
     const initializationOptions = params.initializationOptions ?? {}
 
-    console.log('[HOCON Colorizer Language Server] Options: ' + JSON.stringify(initializationOptions))
+    console.log('[HOCON/Ezflow Language Server] Options: ' + JSON.stringify(initializationOptions))
 
     const locale = '' + (initializationOptions.locale ?? 'en-us')
 
