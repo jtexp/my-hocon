@@ -14,12 +14,24 @@
 		"Programming Languages"
 	],
 	"activationEvents": [
+		"onCustomEditor:catCustoms.catScratch",
 		"onLanguage:hocon",
 		"onCommand:vscode_rdd.test",
 		"onCommand:vscode_rdd.ast"
 	],
 	"main": "./out/src/client/hocon.extension.js",
 	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "catCustoms.catScratch",
+				"displayName": "Cat Scratch",
+				"selector": [
+					{
+						"filenamePattern": "*.conf"
+					}
+				]
+			}
+		],
 		"languages": [
 			{
 				"id": "hocon",

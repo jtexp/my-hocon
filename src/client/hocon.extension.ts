@@ -1,6 +1,7 @@
 import { join } from 'path'
 import { ExtensionContext, commands } from 'vscode'
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, VersionedTextDocumentIdentifier } from 'vscode-languageclient'
+import { CatScratchEditorProvider } from '../editor/catScratchEditor';
 
 
 
@@ -56,7 +57,10 @@ export function activate(context: ExtensionContext): void {
 
   client.start()
 
-  context.subscriptions.push(commands.registerTextEditorCommand('vscode_rdd.ast',
+  context.subscriptions.push(
+    
+    CatScratchEditorProvider.register(context),
+    commands.registerTextEditorCommand('vscode_rdd.ast',
   async (editor, _edit) => {
     const converter = client.code2ProtocolConverter;
     const item =
